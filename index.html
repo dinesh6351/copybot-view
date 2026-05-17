@@ -41,7 +41,7 @@
  <div class=wrap>
   <div class=cards id=cards></div>
   <h3>Open positions <span class=muted id=oc></span></h3>
-  <table id=open><thead><tr><th>Trader<th>Market<th>Pick<th>Shares<th>Cost<th>Avg<th>Mark<th>Unrealized</tr></thead><tbody></tbody></table>
+  <table id=open><thead><tr><th>Trader<th>Market<th>Pick<th>Shares<th>Cost<th>Avg<th>Mark<th>Stop-loss<th>Target<th>Unrealized</tr></thead><tbody></tbody></table>
   <h3>Closed round trips <span class=muted id=cc></span></h3>
   <table id=closed><thead><tr><th>When<th>Trader<th>Market<th>Pick<th>Exit<th>P&L</tr></thead><tbody></tbody></table>
   <p class=muted id=upd></p>
@@ -104,7 +104,7 @@ function render(s){
   ['Open',s.open_count||0],['Errors',s.errors||0],['Skipped',s.skips||0]
  ].map(c=>`<div class=card><div class=lbl>${c[0]}</div><div class=val>${c[1]}</div></div>`).join('');
  document.querySelector('#open tbody').innerHTML=(s.open_positions||[]).map(p=>
-  `<tr><td>${p.trader}<td>${p.slug}<td>${p.outcome}<td>${p.shares}<td>$${p.cost}<td>${p.avg}<td>${p.mark??'-'}<td>${money(p.upnl)}</tr>`).join('')||'<tr><td colspan=8 class=muted>none</td></tr>';
+  `<tr><td>${p.trader}<td>${p.slug}<td>${p.outcome}<td>${p.shares}<td>$${p.cost}<td>${p.avg}<td>${p.mark??'-'}<td title="auto-sell at/below this (${p.stop_pct}%)">${p.stop_price??'-'}<td title="take profit at this (+${p.target_pct}%)">${p.target_price??'-'}<td>${money(p.upnl)}</tr>`).join('')||'<tr><td colspan=10 class=muted>none</td></tr>';
  document.querySelector('#closed tbody').innerHTML=(s.closed||[]).map(c=>
   `<tr><td>${(c.ts||'').slice(0,19).replace('T',' ')}<td>${c.trader}<td>${c.slug}<td>${c.outcome}<td>${c.kind}<td>${money(c.pnl)}</tr>`).join('')||'<tr><td colspan=6 class=muted>none yet</td></tr>';
  document.getElementById('oc').textContent=`(${s.open_count||0})`;
